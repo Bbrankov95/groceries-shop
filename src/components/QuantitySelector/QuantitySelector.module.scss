@@ -1,0 +1,14 @@
+.Wrapper {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 5px;
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  button {
+    height: fit-content;
+  }
+}

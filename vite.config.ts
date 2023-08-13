@@ -11,6 +11,9 @@ export default defineConfig({
       pages: path.resolve(__dirname, "./src/pages"),
       layouts: path.resolve(__dirname, "./src/layouts"),
       "@constants": path.resolve(__dirname, "./src/constants"),
+      api: path.resolve(__dirname, "./src/api"),
+      types: path.resolve(__dirname, "./src/types"),
+      contexts: path.resolve(__dirname, "./src/contexts"),
     },
   },
 });

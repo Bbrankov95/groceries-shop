@@ -1,16 +1,13 @@
-import { useEffect } from "react";
+import { CartContextProvider } from "contexts";
 
 import { AppLayout } from "./layouts";
 
 const App = () => {
-  useEffect(() => {
-    const test = async () => {
-      const res = await (await fetch("http://localhost:2233/groceries")).json();
-      console.log(res);
-    };
-    test();
-  });
-  return <AppLayout />;
+  return (
+    <CartContextProvider>
+      <AppLayout />
+    </CartContextProvider>
+  );
 };
 
 export default App;
