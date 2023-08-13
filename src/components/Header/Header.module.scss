@@ -1,5 +1,12 @@
 .Header {
-  width: 100vw;
+  display: flex;
+  align-items: center;
   min-height: 50px;
-  background-color: red;
+  padding: 15px;
+
+  ul {
+    display: flex;
+    gap: 2rem;
+    margin: auto;
+  }
 }
