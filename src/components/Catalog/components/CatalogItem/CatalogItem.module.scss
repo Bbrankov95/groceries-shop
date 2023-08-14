@@ -4,4 +4,20 @@
   flex: 0 1 250px;
   align-items: center;
   border: 2px solid;
+
+  .Image {
+    width: 100%;
+    background-color: "transparent";
+  }
+
+  p {
+    &:nth-of-type(2) {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  }
+
+  button {
+    transition: color 300ms ease-in-out;
+  }
 }

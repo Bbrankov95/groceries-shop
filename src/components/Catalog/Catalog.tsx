@@ -12,13 +12,8 @@ type CatalogProps = {
 const Catalog: FC<CatalogProps> = memo(({ groceries }) => {
   return (
     <div className={classes.Wrapper}>
-      {groceries?.map?.(({ name, id, quantity }, i) => (
-        <CatalogItem
-          key={`${id}-${i}`}
-          name={name}
-          id={id}
-          quantity={quantity}
-        />
+      {groceries?.map?.((grocerie, i) => (
+        <CatalogItem key={`${grocerie.id}-${i}`} grocerie={grocerie} />
       ))}
     </div>
   );

@@ -1,0 +1,25 @@
+.Wrapper {
+  position: relative;
+
+  .CartBtn {
+    position: relative;
+    &::before {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      top: 0;
+      right: 0;
+      color: white;
+      background-color: #535bf2;
+      border-radius: 50%;
+
+      content: attr(data-before-content);
+    }
+    &.Blink {
+      background-color: rgba(#fff, 0.2);
+    }
+  }
+}
