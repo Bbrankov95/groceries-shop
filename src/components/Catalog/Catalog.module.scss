@@ -1,6 +1,17 @@
 .Wrapper {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
   width: 80%;
   height: 80dvh;
-  background-color: red;
+  border-radius: 10px;
+  overflow-y: auto;
+
+  .CatalogEmpty {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #535bf2;
+  }
 }

@@ -5,11 +5,12 @@ import {
   useCallback,
   useMemo,
   type FC,
+  type ChangeEvent,
 } from "react";
 
 import { type Grocerie } from "types";
 
-import { QuantitySelector } from "components";
+import { Button, QuantitySelector } from "components";
 import { CartContext } from "contexts";
 import { actions } from "@constants";
 
@@ -22,10 +23,24 @@ type CatalogItemProps = {
 };
 
 const CatalogItem: FC<CatalogItemProps> = memo(({ grocerie }) => {
-  const { name, quantity, price, id } = grocerie ?? {};
+  const { name, quantity, price, id, img } = grocerie ?? {};
+  const imageFromBase64Encoding = `data:image/png;base64,${img}`;
   const [selectedQuantity, setSelectedQuantity] =
     useState<CatalogItemProps["grocerie"]["quantity"]>(0);
   const { setCart, cart } = useContext(CartContext);
+
+  const shouldDisableBtn = useMemo(
+    () => selectedQuantity === 0,
+    [selectedQuantity]
+  );
+  const remainingQuantity = useMemo(
+    () => quantity - selectedQuantity,
+    [quantity, selectedQuantity]
+  );
+  const outOfStock = useMemo(
+    () => remainingQuantity === 0,
+    [remainingQuantity]
+  );
 
   const onQuantityChange = useCallback((action: keyof typeof actions) => {
     if (action === DECREMENT) {
@@ -55,25 +70,40 @@ const CatalogItem: FC<CatalogItemProps> = memo(({ grocerie }) => {
     setSelectedQuantity(0);
   }, [cart, grocerie, id, selectedQuantity, setCart]);
 
-  const shouldDisableBtn = useMemo(
-    () => selectedQuantity === 0,
-    [selectedQuantity]
+  const onQuantityInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (!isNaN(Number(e.target.value)) || e.target.value === "") {
+        setSelectedQuantity(
+          Number(e.target.value) > quantity ? quantity : Number(e.target.value)
+        );
+      }
+    },
+    [quantity]
   );
 
   return (
     <div className={classes.Wrapper}>
       <h2>{name}</h2>
-      <div className={classes.Image} />
-      <p>Quantity: {`${quantity - selectedQuantity}`}</p>
+      <img
+        src={imageFromBase64Encoding}
+        className={[
+          classes.Image,
+          !remainingQuantity && classes.OutOfStock,
+        ].join(" ")}
+      />
+      <p className={outOfStock ? classes.OutOfStock : undefined}>
+        {!outOfStock ? `Quantity: ${remainingQuantity} ` : "Out Of Stock!"}
+      </p>
       <p>Price: {price}$</p>
       <QuantitySelector
         selectedQuantity={selectedQuantity}
         onQuantityChange={onQuantityChange}
         maxCount={quantity}
+        onChange={onQuantityInputChange}
       />
-      <button disabled={shouldDisableBtn} onClick={onAddToCart}>
+      <Button disabled={shouldDisableBtn} onClick={onAddToCart}>
         Add to Cart
-      </button>
+      </Button>
     </div>
   );
 });

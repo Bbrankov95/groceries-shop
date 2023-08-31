@@ -4,7 +4,7 @@
   right: 0;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 300px;
   background-color: #fff;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -14,18 +14,40 @@
   user-select: none;
   outline: 3px solid #535bf2;
 
+  .Labels {
+    display: flex;
+    font-weight: bold;
+    padding: 0 5px;
+    border-bottom: 3px solid #535bf2;
+    color: black;
+
+    > p {
+      &:first-child {
+        flex: 1.2;
+      }
+    }
+
+    div {
+      display: flex;
+      flex: 1;
+      gap: 5px;
+    }
+  }
+
   &.Visible {
     opacity: 1;
     user-select: initial;
   }
-  p {
+  > p {
+    display: flex;
+    justify-content: space-between;
     font-size: 0.8rem;
     color: black;
-    font-weight: bold;
-    cursor: pointer;
+    font-weight: 900;
+    padding: 5px;
 
-    &:hover {
-      background-color: #535bf2;
+    > span {
+      font-size: 1.2rem;
     }
 
     &:last-child {

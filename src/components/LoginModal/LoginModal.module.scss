@@ -1,0 +1,18 @@
+.Wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .Form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 50px;
+    background-color: rgba(#fff, 0.1);
+    border-radius: 10px;
+  }
+}

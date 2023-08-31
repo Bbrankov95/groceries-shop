@@ -3,21 +3,44 @@
   flex-direction: column;
   flex: 0 1 250px;
   align-items: center;
-  border: 2px solid;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(#fff, 0.1);
 
   .Image {
     width: 100%;
     background-color: "transparent";
+    transition: filter 300ms ease-in-out;
+    &.OutOfStock {
+      filter: brightness(30%);
+    }
   }
 
-  p {
+  > h2 {
+    margin: 0;
+    font-size: 2rem;
+    color: #535bf2;
+  }
+
+  > p {
     &:nth-of-type(2) {
       font-size: 1.1rem;
       font-weight: bold;
+    }
+
+    &.OutOfStock {
+      color: grey;
     }
   }
 
   button {
     transition: color 300ms ease-in-out;
+
+    &:disabled {
+      &:hover {
+        border-color: transparent;
+      }
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { memo, type FC, useMemo } from "react";
+import { memo, type FC, useMemo, ChangeEvent } from "react";
 
 import classes from "./QuantitySelector.module.scss";
 import { actions } from "@constants";
+import { Button } from "components";
 
 const { DECREMENT, INCREMENT } = actions;
 
@@ -9,10 +10,11 @@ type QuantitySelectorProps = {
   selectedQuantity: number;
   onQuantityChange: (action: keyof typeof actions) => void;
   maxCount: number;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const QuantitySelector: FC<QuantitySelectorProps> = memo(
-  ({ selectedQuantity, onQuantityChange, maxCount }) => {
+  ({ selectedQuantity, onQuantityChange, maxCount, onChange }) => {
     const shouldDisableBtn = useMemo(
       () => selectedQuantity === 0,
       [selectedQuantity]
@@ -20,19 +22,19 @@ const QuantitySelector: FC<QuantitySelectorProps> = memo(
 
     return (
       <div className={classes.Wrapper}>
-        <button
+        <Button
           disabled={shouldDisableBtn}
           onClick={() => onQuantityChange(DECREMENT)}
         >
           -
-        </button>
-        <p>{selectedQuantity}</p>
-        <button
+        </Button>
+        <input type="text" onChange={onChange} value={selectedQuantity} />
+        <Button
           disabled={selectedQuantity === maxCount}
           onClick={() => onQuantityChange(INCREMENT)}
         >
           +
-        </button>
+        </Button>
       </div>
     );
   }

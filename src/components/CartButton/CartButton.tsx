@@ -1,5 +1,6 @@
 import { memo, useContext, useState, useEffect } from "react";
 
+import { Button } from "components";
 import { CartContext } from "contexts";
 import { CartInfo } from "./components";
 
@@ -21,13 +22,13 @@ const CartButton = memo(() => {
 
   return (
     <div className={classes.Wrapper}>
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
         data-before-content={totalProducts}
         className={[classes.CartBtn, test && classes.Blink].join(" ")}
       >
         Cart
-      </button>
+      </Button>
       <CartInfo isOpen={isOpen} />
     </div>
   );

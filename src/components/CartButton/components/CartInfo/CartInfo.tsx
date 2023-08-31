@@ -26,20 +26,34 @@ const CartInfo: FC<CartInfoProps> = memo(({ isOpen }) => {
   return (
     <div className={[classes.Wrapper, isOpen && classes.Visible].join(" ")}>
       {shouldShowEmptyCart ? (
-        <p>There's nothing in your cart yet...!</p>
+        <p>Your Cart is Empty!</p>
       ) : (
-        lastFiveAddedProducts.map(({ name, id, quantity, price }, i) => (
-          <CartInfoItem
-            key={`${id}-${i}`}
-            name={name}
-            id={id}
-            price={price}
-            quantity={quantity}
-          />
-        ))
+        <>
+          <div className={classes.Labels}>
+            <p>Name</p>
+            <div>
+              <p>Qty.</p>
+              <p>Price</p>
+            </div>
+          </div>
+          {lastFiveAddedProducts.map(({ name, id, quantity, price }, i) => (
+            <CartInfoItem
+              key={`${id}-${i}`}
+              name={name}
+              id={id}
+              price={price}
+              quantity={quantity}
+            />
+          ))}
+        </>
       )}
       {shouldShowMore ? <p>See All</p> : null}
-      <p>Total Checkout: {totalCheckoutPrice.toFixed(2) || "0.00"}$</p>
+      {!shouldShowEmptyCart ? (
+        <p>
+          Total Checkout:{" "}
+          <span>{totalCheckoutPrice.toFixed(2) || "0.00"}$</span>
+        </p>
+      ) : null}
     </div>
   );
 });

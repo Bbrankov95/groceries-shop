@@ -1,13 +1,9 @@
-import { CartContextProvider } from "contexts";
+import { memo } from "react";
 
 import { AppLayout } from "./layouts";
 
-const App = () => {
-  return (
-    <CartContextProvider>
-      <AppLayout />
-    </CartContextProvider>
-  );
-};
+const App = memo(() => {
+  return <AppLayout />;
+});
 
 export default App;

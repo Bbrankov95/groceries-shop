@@ -14,6 +14,7 @@ export default defineConfig({
       api: path.resolve(__dirname, "./src/api"),
       types: path.resolve(__dirname, "./src/types"),
       contexts: path.resolve(__dirname, "./src/contexts"),
+      rtk: path.resolve(__dirname, "./src/rtk"),
     },
   },
 });

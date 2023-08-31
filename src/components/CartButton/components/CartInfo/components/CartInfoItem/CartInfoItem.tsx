@@ -1,5 +1,6 @@
 import { memo, useContext, type FC } from "react";
 
+import { Button } from "components";
 import { CartContext } from "contexts";
 import { Grocerie } from "types";
 
@@ -22,7 +23,7 @@ const CartInfoItem: FC<CartInfoItemProps> = memo(
         <div className={classes.Info}>
           <p>{quantity}</p>
           <p>{price}$</p>
-          <button onClick={() => removeItem(id)}>&#10060;</button>
+          <Button onClick={() => removeItem(id)}>&#10060;</Button>
         </div>
       </div>
     );
