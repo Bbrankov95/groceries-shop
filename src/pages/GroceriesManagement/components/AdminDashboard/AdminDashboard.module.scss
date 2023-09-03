@@ -1,0 +1,14 @@
+.Wrapper {
+  display: flex;
+  flex: 0.7;
+
+  .Sidebar {
+    flex: 1;
+    background-color: red;
+  }
+
+  .Content {
+    flex: 3;
+    background-color: blue;
+  }
+}

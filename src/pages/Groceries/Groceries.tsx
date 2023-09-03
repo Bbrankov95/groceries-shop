@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 
 import { Button, Catalog } from "components";
 import { fetchGroceries } from "api";
-import { type Groceries } from "types";
+import type { Groceries } from "types";
 import { setisLogged } from "rtk/slices/authSlice";
 import { useAppSelector, useAppDispatch } from "rtk/hooks";
 
@@ -11,7 +11,7 @@ import classes from "./Groceries.module.scss";
 const Groceries = memo(() => {
   const [groceries, setGroceries] = useState<Groceries>([]);
   const dispatch = useAppDispatch();
-  const authData = useAppSelector((state) => state.authData);
+  const { isLogged } = useAppSelector((state) => state.authData);
 
   const getGroceries = useCallback(async () => {
     try {
@@ -27,13 +27,17 @@ const Groceries = memo(() => {
   }, [getGroceries]);
 
   useEffect(() => {
-    console.log(authData);
-  }, [authData]);
+    console.log(isLogged);
+  }, [isLogged]);
 
   return (
     <section className={classes.Wrapper}>
-      <Button onClick={() => dispatch(setisLogged({ isLogged: true }))}>
-        Log in
+      <Button
+        onClick={() =>
+          dispatch(setisLogged({ isLogged: isLogged ? false : true }))
+        }
+      >
+        {isLogged ? "Log out" : "Log in"}
       </Button>
       <Catalog groceries={groceries} />
     </section>

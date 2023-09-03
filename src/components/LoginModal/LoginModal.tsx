@@ -1,9 +1,12 @@
-import { ChangeEvent, memo, useState, type FC } from "react";
+import { ChangeEvent, memo, useState, type FC, type FormEvent } from "react";
 
 import { Button } from "components";
 import { User } from "types";
+import { useAppDispatch } from "rtk/hooks";
 
 import classes from "./LoginModal.module.scss";
+import { setisLogged } from "rtk/slices/authSlice";
+import { useNavigate } from "react-router";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -14,8 +17,16 @@ const LoginModal: FC<LoginModalProps> = memo(({ isOpen }) => {
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { password, username } = formData;
+
+  const onSubmitHandler = (e: FormEvent) => {
+    e.preventDefault();
+    dispatch(setisLogged({ isLogged: true }));
+    navigate("../groceries-management", { replace: true });
+  };
 
   const onInputChange = ({
     target: { value, name },
@@ -28,7 +39,7 @@ const LoginModal: FC<LoginModalProps> = memo(({ isOpen }) => {
 
   return isOpen ? (
     <div className={classes.Wrapper}>
-      <form className={classes.Form}>
+      <form onSubmit={onSubmitHandler} className={classes.Form}>
         <div>
           <label htmlFor="username">Username</label>
           <input
