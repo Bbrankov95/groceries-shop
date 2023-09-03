@@ -1,11 +1,13 @@
 import { memo } from "react";
 
+import { SiderBar } from "./components";
+
 import classes from "./AdminDashboard.module.scss";
 
 const AdminDashboard = memo(() => {
   return (
     <div className={classes.Wrapper}>
-      <div className={classes.Sidebar} />
+      <SiderBar />
       <div className={classes.Content} />
     </div>
   );

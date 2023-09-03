@@ -1,6 +1,5 @@
 import { memo, useState, useEffect, useMemo } from "react";
 
-import { Button } from "components";
 import { useAppSelector } from "rtk/hooks";
 import { CartInfo } from "./components";
 
@@ -8,27 +7,27 @@ import classes from "./CartButton.module.scss";
 
 const CartButton = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
-  const [test, setTest] = useState(false);
-  const cart = useAppSelector((state) => state.cart.allIds);
+  const [blink, setBlink] = useState(false);
+  const cartItems = useAppSelector((state) => state.cart.allIds);
 
-  const totalProducts = useMemo(() => cart.length, [cart]);
+  const totalProducts = useMemo(() => cartItems.length ?? 0, [cartItems]);
 
   useEffect(() => {
-    setTest(true);
+    setBlink(true);
     setTimeout(() => {
-      setTest(false);
+      setBlink(false);
     }, 300);
-  }, [cart]);
+  }, [cartItems]);
 
   return (
     <div className={classes.Wrapper}>
-      <Button
+      <button
         onClick={() => setIsOpen(!isOpen)}
         data-before-content={totalProducts}
-        className={[classes.CartBtn, test && classes.Blink].join(" ")}
+        className={[classes.CartBtn, blink && classes.Blink].join(" ")}
       >
         Cart
-      </Button>
+      </button>
       <CartInfo isOpen={isOpen} />
     </div>
   );

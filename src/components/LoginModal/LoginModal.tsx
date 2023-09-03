@@ -1,4 +1,11 @@
-import { ChangeEvent, memo, useState, type FC, type FormEvent } from "react";
+import {
+  ChangeEvent,
+  memo,
+  useState,
+  type FC,
+  type FormEvent,
+  useCallback,
+} from "react";
 
 import { Button } from "components";
 import { User } from "types";
@@ -6,7 +13,7 @@ import { useAppDispatch } from "rtk/hooks";
 
 import classes from "./LoginModal.module.scss";
 import { setisLogged } from "rtk/slices/authSlice";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -18,15 +25,23 @@ const LoginModal: FC<LoginModalProps> = memo(({ isOpen }) => {
     password: "",
   });
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const dispatch = useAppDispatch();
 
   const { password, username } = formData;
 
-  const onSubmitHandler = (e: FormEvent) => {
-    e.preventDefault();
-    dispatch(setisLogged({ isLogged: true }));
-    navigate("../groceries-management", { replace: true });
-  };
+  const onSubmitHandler = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      dispatch(setisLogged({ isLogged: true }));
+      navigate(`../${pathname}`, { replace: true });
+    },
+    [dispatch, navigate, pathname]
+  );
+
+  const onCancel = useCallback(() => {
+    navigate(`../${pathname}`, { replace: true });
+  }, [navigate, pathname]);
 
   const onInputChange = ({
     target: { value, name },
@@ -59,6 +74,7 @@ const LoginModal: FC<LoginModalProps> = memo(({ isOpen }) => {
           />
         </div>
         <Button>Log In</Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </form>
     </div>
   ) : null;
