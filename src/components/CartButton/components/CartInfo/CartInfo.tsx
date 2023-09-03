@@ -1,26 +1,35 @@
-import { memo, useContext, useMemo, type FC } from "react";
+import { memo, useMemo, type FC } from "react";
 
-import { CartContext } from "contexts";
+import { useAppSelector } from "rtk/hooks";
+import { CartInfoItem } from "./components";
 
 import classes from "./CartInfo.module.scss";
-import CartInfoItem from "./components/CartInfoItem/CartInfoItem";
 
 type CartInfoProps = {
   isOpen: boolean;
 };
 
 const CartInfo: FC<CartInfoProps> = memo(({ isOpen }) => {
-  const { cart } = useContext(CartContext);
-  const lastFiveAddedProducts = cart.slice(0, 3)?.reverse();
-  const shouldShowEmptyCart = useMemo(() => cart.length === 0, [cart]);
-  const shouldShowMore = useMemo(() => cart.length > 3, [cart]);
+  const { allIds: cartItemsIds, itemsById: cartItemsById } = useAppSelector(
+    (state) => state.cart
+  );
+  const { byId: groceriesById } = useAppSelector((state) => state.groceries);
+
+  const shouldShowEmptyCart = useMemo(
+    () => cartItemsIds.length === 0,
+    [cartItemsIds]
+  );
+  const shouldShowMore = useMemo(
+    () => cartItemsIds.length > 3,
+    [cartItemsIds.length]
+  );
   const totalCheckoutPrice = useMemo(
     () =>
-      cart.reduce((acc: number, next: (typeof cart)[0]) => {
-        acc += next.price * next.quantity;
+      cartItemsIds.reduce((acc, next) => {
+        acc += groceriesById[next].price * cartItemsById[next].quantity;
         return acc;
       }, 0),
-    [cart]
+    [cartItemsById, cartItemsIds, groceriesById]
   );
 
   return (
@@ -36,14 +45,8 @@ const CartInfo: FC<CartInfoProps> = memo(({ isOpen }) => {
               <p>Price</p>
             </div>
           </div>
-          {lastFiveAddedProducts.map(({ name, id, quantity, price }, i) => (
-            <CartInfoItem
-              key={`${id}-${i}`}
-              name={name}
-              id={id}
-              price={price}
-              quantity={quantity}
-            />
+          {cartItemsIds.map((cartItemId, i) => (
+            <CartInfoItem key={`${cartItemId}-${i}`} id={cartItemId} />
           ))}
         </>
       )}

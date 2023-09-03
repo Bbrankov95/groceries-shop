@@ -1,7 +1,7 @@
-import { memo, useContext, useState, useEffect } from "react";
+import { memo, useState, useEffect, useMemo } from "react";
 
 import { Button } from "components";
-import { CartContext } from "contexts";
+import { useAppSelector } from "rtk/hooks";
 import { CartInfo } from "./components";
 
 import classes from "./CartButton.module.scss";
@@ -9,9 +9,9 @@ import classes from "./CartButton.module.scss";
 const CartButton = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [test, setTest] = useState(false);
-  const { cart } = useContext(CartContext);
+  const cart = useAppSelector((state) => state.cart.allIds);
 
-  const totalProducts = cart?.length;
+  const totalProducts = useMemo(() => cart.length, [cart]);
 
   useEffect(() => {
     setTest(true);

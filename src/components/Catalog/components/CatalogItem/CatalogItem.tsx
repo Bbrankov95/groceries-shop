@@ -1,6 +1,5 @@
 import {
   memo,
-  useContext,
   useState,
   useCallback,
   useMemo,
@@ -11,23 +10,28 @@ import {
 import { type Grocerie } from "types";
 
 import { Button, QuantitySelector } from "components";
-import { CartContext } from "contexts";
 import { actions } from "@constants";
+import { useAppDispatch, useAppSelector } from "rtk/hooks";
+import { addToCart } from "rtk/slices/cartSlice";
 
 const { DECREMENT, INCREMENT } = actions;
 
 import classes from "./CatalogItem.module.scss";
 
 type CatalogItemProps = {
-  grocerie: Grocerie;
+  grocerieId: Grocerie["id"];
 };
 
-const CatalogItem: FC<CatalogItemProps> = memo(({ grocerie }) => {
-  const { name, quantity, price, id, img } = grocerie ?? {};
+const CatalogItem: FC<CatalogItemProps> = memo(({ grocerieId }) => {
+  const grocerie =
+    useAppSelector(
+      useCallback((state) => state.groceries.byId?.[grocerieId], [grocerieId])
+    ) ?? {};
+  const { name, quantity, price, img } = grocerie ?? {};
   const imageFromBase64Encoding = `data:image/png;base64,${img}`;
   const [selectedQuantity, setSelectedQuantity] =
-    useState<CatalogItemProps["grocerie"]["quantity"]>(0);
-  const { setCart, cart } = useContext(CartContext);
+    useState<Grocerie["quantity"]>(0);
+  const dispatch = useAppDispatch();
 
   const shouldDisableBtn = useMemo(
     () => selectedQuantity === 0,
@@ -42,6 +46,11 @@ const CatalogItem: FC<CatalogItemProps> = memo(({ grocerie }) => {
     [remainingQuantity]
   );
 
+  const onAddToCart = useCallback(() => {
+    dispatch(addToCart({ id: grocerieId, quantity: selectedQuantity }));
+    setSelectedQuantity(0);
+  }, [dispatch, grocerieId, selectedQuantity]);
+
   const onQuantityChange = useCallback((action: keyof typeof actions) => {
     if (action === DECREMENT) {
       return setSelectedQuantity((prevState) => prevState - 1);
@@ -49,26 +58,6 @@ const CatalogItem: FC<CatalogItemProps> = memo(({ grocerie }) => {
       return setSelectedQuantity((prevState) => prevState + 1);
     }
   }, []);
-
-  const onAddToCart = useCallback(() => {
-    const doesItemExist = cart.find((item) => item.id === id);
-    if (typeof doesItemExist === "undefined") {
-      setCart((prevCart) => [
-        ...prevCart,
-        { ...grocerie, quantity: selectedQuantity },
-      ]);
-    } else {
-      setCart((prevCart) =>
-        prevCart.map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity + selectedQuantity }
-            : item
-        )
-      );
-    }
-
-    setSelectedQuantity(0);
-  }, [cart, grocerie, id, selectedQuantity, setCart]);
 
   const onQuantityInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {

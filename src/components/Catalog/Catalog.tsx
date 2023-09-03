@@ -1,12 +1,12 @@
 import { memo, type FC, useMemo } from "react";
 
-import { Groceries } from "types";
+import { Grocerie } from "types";
 import { CatalogItem } from "./components";
 
 import classes from "./Catalog.module.scss";
 
 type CatalogProps = {
-  groceries: Groceries;
+  groceries: Grocerie["id"][];
 };
 
 const Catalog: FC<CatalogProps> = memo(({ groceries = [] }) => {
@@ -17,8 +17,8 @@ const Catalog: FC<CatalogProps> = memo(({ groceries = [] }) => {
       {isEmpty ? (
         <p className={classes.CatalogEmpty}>No Items Found.</p>
       ) : (
-        groceries?.map?.((grocerie, i) => (
-          <CatalogItem key={`${grocerie.id}-${i}`} grocerie={grocerie} />
+        groceries?.map?.((grocerieId, i) => (
+          <CatalogItem key={`${grocerieId}-${i}`} grocerieId={grocerieId} />
         ))
       )}
     </div>
